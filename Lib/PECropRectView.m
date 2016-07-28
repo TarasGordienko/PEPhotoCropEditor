@@ -295,26 +295,14 @@
     if (CGRectGetWidth(rect) < minWidth) {
         rect.origin.x = CGRectGetMaxX(self.frame) - minWidth;
         rect.size.width = minWidth;
-    }
+        rect.size.height = minWidth * self.fixedAspectRatio;
+    }   
 
     CGFloat minHeight = CGRectGetHeight(self.topEdgeView.bounds) + CGRectGetHeight(self.bottomEdgeView.bounds);
     if (CGRectGetHeight(rect) < minHeight) {
         rect.origin.y = CGRectGetMaxY(self.frame) - minHeight;
         rect.size.height = minHeight;
-    }
-
-    if (self.fixedAspectRatio) {
-        CGRect constrainedRect = rect;
-
-        if (CGRectGetWidth(rect) < minWidth) {
-            constrainedRect.size.width = rect.size.height * (minWidth / rect.size.width);
-        }
-
-        if (CGRectGetHeight(rect) < minHeight) {
-            constrainedRect.size.height = rect.size.width * (minHeight / rect.size.height);
-        }
-
-        rect = constrainedRect;
+        rect.size.width = minHeight / self.fixedAspectRatio;
     }
     
     return rect;
@@ -324,11 +312,7 @@
 {
     CGFloat width = CGRectGetWidth(rect);
     CGFloat height = CGRectGetHeight(rect);
-    if (width < height) {
-        height = width / self.fixedAspectRatio;
-    } else {
-        height = width * self.fixedAspectRatio;
-    }
+    height = width * self.fixedAspectRatio;
     rect.size = CGSizeMake(width, height);
     
     return rect;
@@ -338,11 +322,7 @@
 {
     CGFloat width = CGRectGetWidth(rect);
     CGFloat height = CGRectGetHeight(rect);
-    if (width < height) {
-        width = height * self.fixedAspectRatio;
-    } else {
-        width = height / self.fixedAspectRatio;
-    }
+    width = height / self.fixedAspectRatio;
     rect.size = CGSizeMake(width, height);
     
     return rect;
